@@ -1,5 +1,10 @@
+import allure
+
+
+@allure.title("Test Sum")
 def test_sum():
-    assert 1 == 1, "Incorrect sum of digits"
+    with allure.step("Check sum of digits"):
+        assert 1 == 1, "Incorrect sum of digits"
 
 
 # MIN HOUR DOM MON DOW
