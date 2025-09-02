@@ -19,7 +19,10 @@ pipeline {
 
         stage("Test") {
             steps {
-                sh "pytest"
+                sh '''
+                    . env/bin/activate
+                    pytest
+                '''
             }
 
         }
