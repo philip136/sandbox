@@ -9,9 +9,11 @@ pipeline {
 
         stage("Build") {
             steps {
-                sh "python3 -m venv env"
-                sh "source /env/bin/activate"
-                sh "pip install -r requirements.txt"
+               sh '''
+                    python3 -m venv env
+                    . env/bin/activate
+                    pip install -r requirements.txt
+                '''
             }
         }
 
