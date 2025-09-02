@@ -21,7 +21,7 @@ pipeline {
             steps {
                 sh '''
                     . env/bin/activate
-                    pytest
+                    pytest --alluredir=allure-results
                 '''
             }
 
