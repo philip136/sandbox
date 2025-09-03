@@ -1,5 +1,5 @@
 pipeline {
-    agent: any
+    agent any
 
     parameters {
         string(name: "output", defaultValue: "")
