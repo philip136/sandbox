@@ -24,22 +24,7 @@ pipeline {
                     pytest --alluredir=allure-results
                 '''
             }
-        }
 
-        stage('Generate Allure report') {
-            steps {
-                sh 'allure generate allure-results -o allure-report --clean'
-            }
-        }
-
-        stage('Publish report') {
-            steps {
-                publishHTML(target: [
-                    reportDir: 'allure-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Allure Report'
-                ])
-            }
         }
     }
 }
