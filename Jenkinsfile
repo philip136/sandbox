@@ -7,11 +7,14 @@ pipeline {
 
     stages {
         stage("Read file") {
-        steps {
-            tmp_param =  sh (script: 'cat test_first.py', returnStdout: true).trim()
-            env.output = tmp_param
+            steps {
+                script {
+                    tmp_param =  sh (script: 'cat test_first.py', returnStdout: true).trim()
+                    env.output = tmp_param
+                }
+
+            }
         }
-    }
 
     stage("Output") {
         steps {
