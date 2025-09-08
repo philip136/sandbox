@@ -9,11 +9,48 @@ trigger:
 pool:
   name: TestPool
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  # ----------- Build stage ------------------
+  - stage: Build
+    displayName: Building stage
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    jobs:
+      - job: Build
+        displayName: Building job
+        steps:
+          - script: echo "Starting a building job ..."
+          - checkout: self
+      
+      - job: Store
+        displayName: Save repo artifact
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.13'
+              architecture: 'x64'
+
+          - script: pip install -r requirements.txt   
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Pipeline.Workspace)'
+              artifact: 'repo'
+              publishLocation: 'pipeline'
+
+  # ----------- Run tests -------------------
+  - stage: Tests
+    displayName: Run Python tests
+    dependsOn: Build
+
+    jobs:
+      - job: Tests
+        displayName: Run Tests
+        steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'repo'
+            downloadPath: '$(System.ArtifactsDirectory)'
+
+        - script: echo '$(System.ArtifactsDirectory)'
