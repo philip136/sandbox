@@ -48,5 +48,8 @@ stages:
             downloadType: 'single'
             artifactName: 'repo'
             downloadPath: '$(System.ArtifactsDirectory)'
-
         - script:  python3 '$(System.ArtifactsDirectory)/${{ parameters.Name }}'
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)/output'
+            artifact: 'test_results'
