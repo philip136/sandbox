@@ -48,4 +48,4 @@ stages:
             artifactName: 'repo'
             downloadPath: '$(System.ArtifactsDirectory)'
 
-        - script:  python '$(System.ArtifactsDirectory)/test_first.py'
+        - script:  python3 '$(System.ArtifactsDirectory)/test_first.py'
