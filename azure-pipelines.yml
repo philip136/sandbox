@@ -24,11 +24,6 @@ stages:
       - job: Store
         displayName: Save repo artifact
         steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.10'
-              architecture: 'x64'
-
           - script: pip install -r requirements.txt   
 
           - task: PublishPipelineArtifact@1
