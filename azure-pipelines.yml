@@ -26,7 +26,7 @@ stages:
         steps:
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: '3.13'
+              versionSpec: '3.10'
               architecture: 'x64'
 
           - script: pip install -r requirements.txt   
@@ -53,4 +53,4 @@ stages:
             artifactName: 'repo'
             downloadPath: '$(System.ArtifactsDirectory)'
 
-        - script: echo '$(System.ArtifactsDirectory)'
+        - script:  python '$(System.ArtifactsDirectory)/test_first.py'
