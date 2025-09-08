@@ -14,17 +14,12 @@ stages:
   - stage: Build
     displayName: Building stage
 
-    jobs:
+    jobs:      
       - job: Build
-        displayName: Building job
-        steps:
-          - script: echo "Starting a building job ..."
-          - checkout: self
-      
-      - job: Store
         displayName: Save repo artifact
         steps:
           - script: pip install -r requirements.txt   
+          - checkout: self
 
           - task: PublishPipelineArtifact@1
             inputs:
