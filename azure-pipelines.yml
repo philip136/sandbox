@@ -3,6 +3,11 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+  - name: FileName
+    displayName: Filename
+    default: message.txt
+
 
 trigger:
 - master
@@ -18,7 +23,7 @@ stages:
       - job: Write
         displayName: Write to file
         steps:
-          - script: echo Tralalal >> message.txt  
+          - script: echo Tralalal >> ${{ parameters.FileName }}  
 
           - task: PublishPipelineArtifact@1
             inputs:
@@ -42,4 +47,4 @@ stages:
             downloadType: 'single'
             artifactName: 'repo'
             downloadPath: '$(System.ArtifactsDirectory)'
-        - script: cat '$(System.ArtifactsDirectory)/message.txt'
+        - script: cat '$(System.ArtifactsDirectory)/${{ parameters.FileName }}  '
