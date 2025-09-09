@@ -34,8 +34,6 @@ stages:
   # ----------- Run tests -------------------
   - stage: Read
     displayName: Read content
-    dependsOn: Write
-    condition: succeeded()
 
     jobs:
       - job: Read
