@@ -10,7 +10,8 @@ parameters:
 
 
 variables:
-   filename: ${{ trim(parameters.FileName) }}
+   - name: filename
+     value: ${{ trim(parameters.FileName) }}
 
 trigger:
 - master
