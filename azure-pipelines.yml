@@ -3,10 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-parameters:
-  - name: Name
-    displayName: Script name
-    default: test_first.py
 
 trigger:
 - master
@@ -15,16 +11,14 @@ pool:
   name: TestPool
 
 stages:
-  # ----------- Build stage ------------------
-  - stage: Build
-    displayName: Building stage
+  - stage: Write
+    displayName: Write to file
 
     jobs:      
-      - job: Build
-        displayName: Save repo artifact
+      - job: Write
+        displayName: Write to file
         steps:
-          - checkout: self
-          - script: pip install -r requirements.txt   
+          - script: echo Tralalal >> message.txt  
 
           - task: PublishPipelineArtifact@1
             inputs:
@@ -33,14 +27,14 @@ stages:
               publishLocation: 'pipeline'
 
   # ----------- Run tests -------------------
-  - stage: Tests
-    displayName: Run Python tests
-    dependsOn: Build
+  - stage: Read
+    displayName: Read content
+    dependsOn: Write
     condition: succeeded()
 
     jobs:
-      - job: Tests
-        displayName: Run Tests
+      - job: Read
+        displayName: Read content
         steps:
         - task: DownloadBuildArtifacts@1
           inputs:
@@ -48,8 +42,4 @@ stages:
             downloadType: 'single'
             artifactName: 'repo'
             downloadPath: '$(System.ArtifactsDirectory)'
-        - script:  python3 '$(System.ArtifactsDirectory)/${{ parameters.Name }}'
-        - task: PublishPipelineArtifact@1
-          inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/output'
-            artifact: 'test_results'
+        - script: cat '$(System.ArtifactsDirectory)/message.txt'
