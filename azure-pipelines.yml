@@ -34,6 +34,7 @@ stages:
   # ----------- Run tests -------------------
   - stage: Read
     displayName: Read content
+    dependsOn: [] 
 
     jobs:
       - job: Read
