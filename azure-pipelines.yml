@@ -3,17 +3,47 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+  - name: FileName
+    displayName: Filename
+    default: message.txt
+
+
 trigger:
 - master
 
 pool:
   name: TestPool
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: Write
+    displayName: Write to file
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    jobs:      
+      - job: Write
+        displayName: Write to file
+        steps:
+          - script: echo Tralalal >> ${{ parameters.FileName }}
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.SourcesDirectory)'
+              artifact: 'repo'
+              publishLocation: 'pipeline'
+
+  # ----------- Run tests -------------------
+  - stage: Read
+    displayName: Read content
+    dependsOn: [] 
+
+    jobs:
+      - job: Read
+        displayName: Read content
+        steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'repo'
+            downloadPath: '$(System.ArtifactsDirectory)'
+        - script: cat '$(System.ArtifactsDirectory)/${{ parameters.FileName }}'
