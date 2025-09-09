@@ -9,6 +9,9 @@ parameters:
     default: message.txt
 
 
+variables:
+   filename: ${{ trim(parameters.FileName) }}
+
 trigger:
 - master
 
@@ -23,7 +26,7 @@ stages:
       - job: Write
         displayName: Write to file
         steps:
-          - script: echo Tralalal >> ${{ parameters.FileName }}  
+          - script: echo Tralalal >> $filename  
 
           - task: PublishPipelineArtifact@1
             inputs:
@@ -47,4 +50,4 @@ stages:
             downloadType: 'single'
             artifactName: 'repo'
             downloadPath: '$(System.ArtifactsDirectory)'
-        - script: cat '$(System.ArtifactsDirectory)/${{ parameters.FileName }}  '
+        - script: cat '$(System.ArtifactsDirectory)/$filename'
